@@ -2,6 +2,8 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Recipe {
     @Id
@@ -9,17 +11,13 @@ public class Recipe {
 
     private Long id;
     private String name;
+    @Column(length = 1000)
     private String instructions;
-    private String ingredients;
+    @ElementCollection
+    @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
+    @Column(name = "ingredient")
+    private List<String> ingredients;
 
-    public Recipe(){}
-    public Recipe(String name, String instructions, String ingredients)
-    {
-        this.name=name;
-        this.instructions= instructions;
-        this.ingredients= ingredients;
-
-    }
     public Long getId(){
         return id;
     }
@@ -30,24 +28,19 @@ public class Recipe {
         return instructions;
     }
 
-    public  String getIngredients(){
+    public  List<String> getIngredients(){
         return ingredients;
     }
-
     public void setId(){
         this.id =id;
     }
-
-    public void setName(){
-        this.name=name;
+    public void setName(String name){
+        this.name= this.name;
     }
-    public void setInstructions(){
-        this.instructions=instructions;
+    public void setInstructions(String instructions){
+        this.instructions= this.instructions;
     }
-
-    public void setIngredients(){
-        this.ingredients=ingredients;
+    public void setIngredients(List<String>ingredients){this.ingredients=ingredients;
     }
-
 }
 

@@ -18,34 +18,37 @@ public class RecipeController {
 
     @GetMapping
     public List<Recipe> getAllRecipes(){
+
         return recipeService.getAllRecipes();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
-        Optional<Recipe> recipe = recipeService.getRecipeById(id);
-        if (recipe.isPresent()) {
-            return ResponseEntity.ok(recipe.get());
-        } else {
+        Recipe recipe = recipeService.getRecipeById(id);
+        if (recipe == null) {
             return ResponseEntity.notFound().build();
         }
-    }
+            return ResponseEntity.ok(recipe);
+        }
+
     @PostMapping
-    public Recipe addRecipe(@RequestBody Recipe recipe){
-        return  recipeService.addRecipe(recipe);
+    public Recipe createRecipe(@RequestBody Recipe recipe){
+
+        return  recipeService.createRecipe(recipe);
     }
 
-    @GetMapping("/search")
-    public List<Recipe> searchRecipes(@RequestParam(required = false) String name,
-    @RequestParam(required = false) String ingredient){
-        if(name!= null) {
-            return recipeService.searchRecipesByName(name);
+    @PutMapping("/{id}")
+    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @RequestBody Recipe recipeDetails){
+        Recipe updatedRecipe = recipeService.updateRecipe(id, recipeDetails);
+        if (updatedRecipe==null){
+            return  ResponseEntity.notFound().build();
         }
-        else if(ingredient!=null){
-            return  recipeService.searchRecipesByIngredient(ingredient);
-        }
-        else {
-            return  recipeService.getAllRecipes();
-        }
+        return ResponseEntity.ok(updatedRecipe);
     }
+
+   @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRecipe(@PathVariable Long id){
+        recipeService.deleteRecipe(id);
+        return ResponseEntity.noContent().build();
+   }
 }

@@ -4,9 +4,7 @@ import org.example.model.Recipe;
 import org.example.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RecipeService {
@@ -17,18 +15,27 @@ public class RecipeService {
     public List<Recipe> getAllRecipes(){
         return recipeRepository.findAll();
     }
-    public Optional<Recipe> getRecipeById(Long id){
-        return recipeRepository.findById(id);
+    public Recipe getRecipeById(Long id){
+        return recipeRepository.findById(id).orElse(null);
     }
-    public Recipe addRecipe(Recipe recipe)
+    public Recipe createRecipe(Recipe recipe)
     {
         return recipeRepository.save(recipe);
     }
 
-    public List<Recipe> searchRecipesByName(String name){
-        return recipeRepository.findByNameContainingIgnoreCase(name);
-    }
-    public List<Recipe> searchRecipesByIngredient(String ingredient){
-        return recipeRepository.findByIngredientsContainingIgnoreCase(ingredient);
-    }
+ public Recipe updateRecipe(Long id, Recipe recipeDetails){
+        Recipe recipe = recipeRepository.findById(id).orElse(null);
+        if (recipe!=null)
+        {
+            recipe.setName(recipeDetails.getName());
+            recipe.setInstructions(recipeDetails.getInstructions());
+            recipe.setIngredients(recipeDetails.getIngredients());
+            return recipeRepository.save(recipe);
+        }
+        return null;
+ }
+ public void deleteRecipe(Long id)
+ {
+     recipeRepository.deleteById(id);
+ }
 }
