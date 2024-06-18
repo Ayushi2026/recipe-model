@@ -12,16 +12,11 @@ public class RecipeService {
     @Autowired
     private RecipeRepository recipeRepository;
 
-    public List<Recipe> getAllRecipes(){
-        return recipeRepository.findAll();
-    }
+    public List<Recipe> getAllRecipes(){ return recipeRepository.findAll();}
     public Recipe getRecipeById(Long id){
         return recipeRepository.findById(id).orElse(null);
     }
-    public Recipe createRecipe(Recipe recipe)
-    {
-        return recipeRepository.save(recipe);
-    }
+    public Recipe createRecipe(Recipe recipe) {return recipeRepository.save(recipe);}
 
  public Recipe updateRecipe(Long id, Recipe recipeDetails){
         Recipe recipe = recipeRepository.findById(id).orElse(null);

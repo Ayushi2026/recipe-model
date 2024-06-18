@@ -3,11 +3,11 @@ package org.example.controller;
 import org.example.model.Recipe;
 import org.example.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -17,10 +17,7 @@ public class RecipeController {
     private RecipeService recipeService;
 
     @GetMapping
-    public List<Recipe> getAllRecipes(){
-
-        return recipeService.getAllRecipes();
-    }
+    public List<Recipe> getAllRecipes(){return recipeService.getAllRecipes();}
 
     @GetMapping("/{id}")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
@@ -30,10 +27,8 @@ public class RecipeController {
         }
             return ResponseEntity.ok(recipe);
         }
-
     @PostMapping
     public Recipe createRecipe(@RequestBody Recipe recipe){
-
         return  recipeService.createRecipe(recipe);
     }
 
