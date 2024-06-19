@@ -66,17 +66,15 @@ public class RecipeControllerTest {
 
         //When
         when(recipeService.getRecipeById(1L)).thenReturn(recipe);
-
         ResponseEntity<Recipe> response = recipeController.getRecipeById(1L);
-        //Then
+
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(recipe, response.getBody());
 
-        //When
         when(recipeService.getRecipeById(2L)).thenReturn(null);
         ResponseEntity<Recipe> responseNotFound = recipeController.getRecipeById(2L);
 
-        //Then
+       //Then
         assertEquals(HttpStatus.NOT_FOUND, responseNotFound.getStatusCode());
         assertNull(responseNotFound.getBody());
     }
@@ -86,12 +84,17 @@ public class RecipeControllerTest {
         //Given
         Recipe recipe = new Recipe();
         recipe.setName("Chicken Biryani");
+        recipe.setInstructions("Cook rice and mix with spices");
+        recipe.setIngredients(Arrays.asList("Rice", "Chicken","Spices"));
+
         //When
         when(recipeService.createRecipe(any(Recipe.class))).thenReturn(recipe);
 
         Recipe result = recipeController.createRecipe(recipe);
         //Then
         assertEquals("Chicken Biryani", result.getName());
+        assertEquals("Cook rice and mix with spices", result.getInstructions());
+        assertEquals(Arrays.asList("Rice", "Chicken","Spices"), result.getIngredients());
         verify(recipeService, times(1)).createRecipe(recipe);
     }
 
